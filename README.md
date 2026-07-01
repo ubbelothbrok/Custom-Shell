@@ -1,675 +1,289 @@
-# Custom Shell - A Complete Unix-like Shell in C
+# Custom Shell
 
-A **fully-featured Unix-like shell implementation** in pure C using POSIX APIs. Built from first principles for a Computer Science college project, with all 5 phases implemented and extensively documented.
+A Unix-like shell implementation in C with full support for external commands, built-ins, piping, redirection, and background jobs.
 
-## ✨ Complete Feature Set
+## About This Project
 
-- ✅ **Phase 1:** Basic REPL with external command execution
-- ✅ **Phase 2:** Built-in commands (cd, pwd, exit)
-- ✅ **Phase 3:** Input/output redirection (<, >, >>)
-- ✅ **Phase 4:** Piping (|) between commands  
-- ✅ **Phase 5:** Signal handling, background jobs (&), Ctrl+C immunity
+This is a complete shell implementation in pure C using POSIX system calls. It reads commands from the user, parses them, and executes them either as external programs or built-in commands. The shell supports piping, input/output redirection, background jobs, and proper signal handling.
 
-## 🚀 Quick Start
+**Features:**
+- ✅ External command execution
+- ✅ Built-in commands (cd, pwd, exit)
+- ✅ Input/output redirection (<, >, >>)
+- ✅ Piping (|) between commands
+- ✅ Background job execution (&)
+- ✅ Signal handling (Ctrl+C immunity)
+- ✅ Zero memory leaks
+
+## Quick Start
+
+### Using Makefile
+
+```bash
+# Build the shell
+make
+
+# Run the shell
+make run
+
+# Or run directly
+./bin/shell
+```
+
+### Without Makefile
+
+```bash
+# Compile manually
+gcc -o shell src/main.c src/shell.c -Wall -Wextra
+
+# Run it
+./shell
+```
+
+### Exit the Shell
+
+```bash
+shell> exit
+# or
+shell> Ctrl+D
+```
+
+## Compilation Methods
+
+### Method 1: With Makefile (Recommended)
 
 ```bash
 # Build
 make
 
-# Run
-./bin/shell
-
-# Try these commands
-shell> ls -la
-shell> cd /tmp && pwd
-shell> cat file.txt | grep pattern | sort > result.txt
-shell> sleep 10 &
-shell> Ctrl+C (shell ignores, job terminates)
-shell> exit
-```
-
-## 📦 What's Included
-
-**Source Code (900+ lines):**
-- `src/main.c` - Complete REPL loop with all features
-- `src/shell.c` - Parsing, execution, pipes, redirection
-- `src/shell.h` - Public interface and data structures
-
-**Comprehensive Documentation (80+ KB):**
-- `README.md` - This file
-- `PHASE1.md` - Basic REPL & fork/execvp
-- `PHASE2.md` - Built-in commands
-- `PHASE3.md` - Input/output redirection
-- `PHASE4.md` - Piping & data flow
-- `PHASE5.md` - Signals & background jobs
-- `CODE_WALKTHROUGH.md` - Line-by-line explanation
-- `TESTING.md` - Testing procedures
-- `QUICK_REFERENCE.md` - Quick lookup
-
-**Professional Build System:**
-- Makefile with 7 targets
-- Zero warnings/errors
-- Debug support (GDB, strace)
-- Memory testing (Valgrind)
-
-## 🎯 Features by Phase
-
-### Phase 1: Basic REPL
-```bash
-shell> ls
-shell> pwd
-shell> echo hello
-```
-
-### Phase 2: Built-in Commands  
-```bash
-shell> cd /tmp
-shell> pwd
-shell> exit
-```
-
-### Phase 3: Redirection
-```bash
-shell> sort < input.txt > output.txt
-shell> echo "data" >> log.txt
-shell> cat < file.txt | grep pattern
-```
-
-### Phase 4: Piping
-```bash
-shell> cat file.txt | grep pattern | sort | uniq
-shell> ps aux | grep ssh | wc -l
-shell> cat input.txt | sort > sorted.txt
-```
-
-### Phase 5: Signals & Background
-```bash
-shell> sleep 100 &
-[1234] sleep
-shell> Ctrl+C (shell continues, job terminated)
-shell> ps        # See background jobs
-```
-
-## 📚 Documentation Structure
-
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| **README.md** | Project overview | Everyone |
-| **PHASE1.md** | Basic architecture | Students |
-| **PHASE2.md** | Built-in command design | Learners |
-| **PHASE3.md** | File I/O redirection | Implementers |
-| **PHASE4.md** | Pipeline data flow | Developers |
-| **PHASE5.md** | Signal handling | Advanced |
-| **CODE_WALKTHROUGH.md** | Detailed explanations | Readers |
-| **TESTING.md** | How to test | Testers |
-| **QUICK_REFERENCE.md** | Quick lookup | Users |
-
-## 🔧 Build Instructions
-
-### Prerequisites
-
-**macOS:**
-```bash
-xcode-select --install
-```
-
-**Linux:**
-```bash
-sudo apt-get install build-essential
-```
-
-### Compile
-
-```bash
-make
-```
-
-No external dependencies - uses only standard POSIX APIs!
-
-### Run
-
-```bash
-./bin/shell
-```
-
-## 📋 System Calls Used
-
-| Phase | System Calls |
-|-------|--------------|
-| 1 | fork, execvp, waitpid, wait |
-| 2 | chdir, getcwd, getenv |
-| 3 | open, close, dup2 |
-| 4 | pipe |
-| 5 | signal, kill |
-
-All POSIX standard - no platform-specific code.
-
-## 🎓 Learning Outcomes
-
-This project teaches:
-
-- ✓ Process creation and management (fork)
-- ✓ Process execution (execvp)
-- ✓ Process synchronization (wait/waitpid)
-- ✓ File I/O and descriptors (open, close, dup2)
-- ✓ Interprocess communication (pipes)
-- ✓ Signal handling (signal, handlers)
-- ✓ Memory management (malloc, free)
-- ✓ String processing (strtok, parsing)
-- ✓ Error handling (perror, exit codes)
-- ✓ POSIX programming
-- ✓ Modular code design
-- ✓ Systems programming best practices
-
-## 📊 Project Statistics
-
-```
-Source Code:           ~900 lines of C
-Documentation:        ~80 KB (10 files)
-Compilation Warnings:  0
-Compilation Errors:    0
-Memory Leaks:          0
-Test Coverage:         Comprehensive
-```
-
-## 🧪 Testing
-
-### Quick Test
-
-```bash
+# Build and run
 make run
-shell> ls
-shell> pwd  
-shell> ^D
-```
 
-### Full Test Suite
-
-```bash
-# Test piping
-echo "3 1 2" | tr ' ' '\n' | sort
-
-# Test redirection
-echo "hello" > test.txt && cat < test.txt
-
-# Test background
-sleep 5 &
-
-# Test built-ins
-cd /tmp && pwd && exit
-```
-
-### Memory Testing (Linux)
-
-```bash
-make valgrind
-# Run commands, exit with Ctrl+D
-# Should show: definitely lost: 0 bytes
-```
-
-### Debug with GDB
-
-```bash
-make debug
-(gdb) run
-shell> ls
-^C
-(gdb) bt
-(gdb) quit
-```
-
-## 🏗️ Architecture
-
-### Modular Design
-
-```
-main.c (REPL loop)
-   ├─ parse_pipeline()    ← Handle all phases
-   ├─ execute_pipeline()  ← Execute with redirections & pipes
-   ├─ execute_builtin()   ← cd, pwd, exit
-   └─ setup_signals()     ← Ctrl+C handling
-
-shell.c (Core functions)
-   ├─ parse_command()         ← Tokenize
-   ├─ parse_pipeline()        ← Handle pipes & redirections
-   ├─ execute_command()       ← Single command
-   ├─ execute_pipeline()      ← Multiple commands
-   ├─ is_builtin()            ← Check if built-in
-   ├─ execute_builtin()       ← Run built-in
-   ├─ free_command()          ← Cleanup
-   ├─ free_pipeline()         ← Cleanup
-   └─ setup_signal_handlers() ← Signal handling
-```
-
-### Data Flow
-
-```
-User Input
-   ↓
-parse_pipeline()  ← Parse pipes, redirections, background
-   ↓
-Pipeline Structure  ← List of commands with metadata
-   ↓
-execute_pipeline()
-   ├─ If built-in → execute_builtin()
-   └─ If external → fork + execvp + (waitpid or background)
-   ↓
-free_pipeline()  ← Memory cleanup
-   ↓
-Repeat/Exit
-```
-
-## ⚙️ Makefile Targets
-
-```bash
-make              # Build the shell
-make run          # Build and run
-make debug        # Debug with GDB
-make clean        # Remove build artifacts
-make valgrind     # Check memory (Linux)
-make strace       # Trace syscalls (Linux)
-make help         # Show targets
-```
-
-## 📝 Code Quality
-
-- **Clean code:** Well-structured, modular functions
-- **Comments:** Extensive inline documentation
-- **Error handling:** Proper error checking throughout
-- **Memory safety:** Proper malloc/free discipline
-- **Standards compliant:** C99, POSIX APIs only
-- **Production ready:** Used in real educational contexts
-
-## 🔒 Memory Management
-
-- ✅ All allocated memory is freed
-- ✅ No memory leaks (verified design)
-- ✅ No buffer overflows (bounded arrays)
-- ✅ Safe error handling
-- ✅ Proper malloc failure checks
-
-## 🚫 Known Limitations (By Design)
-
-These are intentionally omitted to keep the shell focused and educational:
-
-- No history/readline
-- No aliases or functions
-- No environment variables (uses system PATH)
-- No job control (fg, bg, jobs commands)
-- No stderr redirection (2>)
-- No process substitution (<())
-- No globbing (* ? [])
-
-## 🎯 Use Cases
-
-**Educational:**
-- Learn systems programming
-- Understand Unix shell internals
-- Practice with POSIX APIs
-
-**Project:**
-- College assignment submission
-- Portfolio demonstration
-- Interview preparation
-
-**Reference:**
-- How pipes work internally
-- Signal handling in practice
-- Process management examples
-
-## 📖 Reading Guide
-
-### First Time Users
-1. Read: `README.md` (this file)
-2. Build: `make run`
-3. Try: Some example commands
-4. Read: `PHASE1.md` for overview
-
-### Learning Implementation
-1. Read: `PHASE1.md` through `PHASE5.md`
-2. Read: `CODE_WALKTHROUGH.md`
-3. Study: `src/main.c`, `src/shell.c`
-4. Debug: `make debug` or `make strace`
-
-### Reference
-1. Use: `QUICK_REFERENCE.md`
-2. Check: Specific phase docs
-3. Test: `TESTING.md`
-
-## 🤔 FAQ
-
-**Q: Can I run this shell as my login shell?**  
-A: Not recommended (educational code). Good for learning though!
-
-**Q: Why C and not Python/Rust?**  
-A: To learn low-level systems programming with POSIX APIs.
-
-**Q: Does this handle all shell features?**  
-A: No - just 5 core features. Real shells have 100+ features.
-
-**Q: Can I extend it?**  
-A: Yes! Try adding: history, aliases, wildcards, job control.
-
-**Q: How does it compare to bash/zsh?**  
-A: Much simpler. Good for learning, not for daily use!
-
-## 🔍 Debugging Tips
-
-**Shell crashes:**
-```bash
-make debug
-# Set breakpoint, run, examine state
-```
-
-**Memory issues:**
-```bash
-make valgrind
-# Run commands, exit with Ctrl+D
-```
-
-**System calls:**
-```bash
-make strace
-# Watch fork, execvp, wait4, pipe
-```
-
-**Specific behavior:**
-- Add `printf()` debugging
-- Rebuild with `make`
-- Run and observe
-
-## 📞 Support
-
-For detailed explanations of any phase:
-- See corresponding `PHASE#.md` file
-- Reference `CODE_WALKTHROUGH.md`
-- Check `TESTING.md` for procedures
-
-## 🎓 Educational Value
-
-This is **not** production code but **excellent for learning**:
-
-✓ Teaches real systems programming  
-✓ Uses actual POSIX APIs  
-✓ Shows proper error handling  
-✓ Demonstrates process management  
-✓ Explains signal handling  
-✓ Memory-safe implementation  
-✓ Well-commented code  
-✓ Comprehensive documentation  
-
-Perfect for:
-- Computer Science students
-- Systems programming courses
-- Interview preparation
-- Understanding Unix shells
-- Learning C programming
-
-## 📄 License
-
-Educational use. No restrictions.
-
-## 🙏 Credits
-
-Built as an educational project demonstrating Unix systems programming from first principles. Every line of code includes explanations of *why* it works this way.
-
----
-
-**Status: ✅ All 5 Phases Complete & Production Ready**
-
-*Start with README.md, then read PHASE1.md through PHASE5.md for a complete understanding.*
-
-**Happy coding!** 🚀
-
-
-## Build Instructions
-
-### Prerequisites
-
-- **macOS**: Xcode Command Line Tools
-  ```bash
-  xcode-select --install
-  ```
-- **Linux**: GCC and standard development tools
-  ```bash
-  sudo apt-get install build-essential
-  ```
-
-### Compile
-
-```bash
-make
-```
-
-This creates `bin/shell`.
-
-### Run
-
-```bash
-make run
-```
-
-Or directly:
-```bash
-./bin/shell
-```
-
-### Clean
-
-```bash
+# Clean build artifacts
 make clean
 ```
 
-## Usage Example
+### Method 2: Manual Compilation
+
+**On macOS/Linux:**
+```bash
+gcc -o shell src/main.c src/shell.c -Wall -Wextra
+./shell
+```
+
+**With optimization:**
+```bash
+gcc -O2 -o shell src/main.c src/shell.c -Wall -Wextra
+./shell
+```
+
+**Debug build:**
+```bash
+gcc -g -o shell src/main.c src/shell.c -Wall -Wextra
+gdb ./shell
+```
+
+### Prerequisites
+
+- GCC or Clang compiler
+- Standard C library
+- POSIX-compliant OS (Linux, macOS, Unix)
+
+No external dependencies required!
+
+## Shell Commands
+
+### External Commands
+
+Any standard Unix command can be executed:
 
 ```bash
-$ ./bin/shell
-=== Custom Shell - Phase 1 ===
-Type commands like: ls, pwd, cat filename.txt
-Press Ctrl+D to exit
+shell> ls                       # List files
+shell> ls -la                   # List with details
+shell> pwd                      # Print working directory
+shell> cat file.txt             # Display file contents
+shell> echo hello               # Print text
+shell> date                     # Show current date/time
+shell> grep pattern file.txt    # Search text
+shell> sort file.txt            # Sort lines
+shell> find . -name "*.txt"     # Find files
+```
 
-shell> ls -la
-total 24
-drwxr-xr-x   6 user  group   192 Jun 29 13:50 .
-drwxr-xr-x  10 user  group   320 Jun 29 13:45 ..
--rw-r--r--   1 user  group   547 Jun 29 13:50 Makefile
-drwxr-xr-x   3 user  group    96 Jun 29 13:50 bin
-drwxr-xr-x   3 user  group    96 Jun 29 13:50 build
-drwxr-xr-x   3 user  group    96 Jun 29 13:50 src
+### Built-in Commands
+
+These commands run inside the shell:
+
+**`cd [path]`** - Change directory
+```bash
+shell> cd /tmp                  # Go to /tmp
+shell> cd ~                     # Go to home directory
+shell> cd -                     # Go to previous directory
+shell> cd                       # Go to home
+shell> cd ..                    # Go to parent directory
+```
+
+**`pwd`** - Print current working directory
+```bash
 shell> pwd
 /Users/ubbe/Documents/Custom-Shell
-shell> echo "Hello from shell!"
-Hello from shell!
-shell> ^D
-Exit
 ```
 
-## Code Structure
-
-```
-Custom-Shell/
-├── src/
-│   ├── main.c          Main shell loop
-│   ├── shell.c         Command parser & executor
-│   └── shell.h         Public interface
-├── bin/
-│   └── shell           Compiled executable
-├── build/
-│   ├── main.o          Compiled objects
-│   └── shell.o
-├── Makefile            Build configuration
-├── PHASE1.md           Phase 1 detailed docs
-├── TESTING.md          Testing & debugging guide
-└── README.md           This file
-```
-
-## Key Concepts Explained
-
-### Fork/Execvp Pattern
-
-The shell uses the fundamental Unix pattern for process creation:
-
-```
-fork()  ──> Duplicate process
-         ├─ Parent: Gets child's PID
-         └─ Child: Gets 0
-
-execvp()  ──> Replace child's memory with new program
-          ├─ Searches $PATH
-          └─ Never returns on success
-
-waitpid() ──> Parent waits for child
-          └─ Reaps zombie process
-```
-
-### Command Parsing
-
-Input string → Dynamic array of arguments:
-```
-"ls -la /tmp"
-    ↓ strtok() on spaces
-["ls", "-la", "/tmp", NULL]
-    ↓ passed to execvp()
-Executes: /bin/ls -la /tmp
-```
-
-### Memory Management
-
-Careful malloc/free discipline:
-1. Allocate memory for each argument
-2. Allocate array of pointers
-3. After command execution, free all allocations
-4. Prevents memory leaks over many commands
-
-## Design Principles
-
-1. **Modularity**: Each function has a single responsibility
-2. **Clarity**: Extensive comments explain *why*, not just *what*
-3. **Safety**: Proper error handling and memory management
-4. **Learning**: Code is written for educational value
-5. **Standards**: POSIX APIs only—no platform-specific code
-
-## Compilation Details
-
-**Flags used:**
-- `-Wall -Wextra`: Enable all important warnings
-- `-pedantic`: Strict C standard compliance
-- `-std=c99`: Use C99 standard
-- `-g`: Include debug symbols
-
-**No warnings or errors** on modern compilers.
-
-## Testing
-
-See [TESTING.md](TESTING.md) for comprehensive testing guide including:
-
-- Interactive testing
-- Automated command sequences
-- Memory leak detection
-- Debugging with GDB
-- System call tracing
-- Stress testing
-- Performance analysis
-
-Quick test:
+**`exit [code]`** - Exit the shell
 ```bash
-echo -e "ls\npwd\necho hello" | ./bin/shell
+shell> exit                     # Exit with code 0
+shell> exit 1                   # Exit with code 1
 ```
 
-## Memory Safety
+## Input/Output Redirection
 
-Phase 1 is memory-safe:
-- ✅ All allocated memory is freed
-- ✅ No buffer overflows (bounded arrays with `MAX_ARGS`, `MAX_INPUT_SIZE`)
-- ✅ Proper error handling for malloc failures
-- ✅ No memory leaks after each command
+### Input Redirection `<`
 
-Can be verified with Valgrind on Linux or `leaks` on macOS.
+Read from a file instead of keyboard:
+```bash
+shell> sort < data.txt              # sort reads from data.txt
+shell> grep pattern < input.txt     # grep reads from input.txt
+shell> wc -l < document.txt         # Count lines
+```
 
-## Known Limitations (Fixed in Later Phases)
+### Output Redirection `>`
 
-- ❌ No built-in commands (cd, exit)
-- ❌ No input/output redirection
-- ❌ No piping
-- ❌ Ctrl+C exits the shell
-- ❌ No command history
+Write to a file (overwrites if exists):
+```bash
+shell> ls > listing.txt             # Save file list to listing.txt
+shell> echo "hello" > output.txt    # Create output.txt with "hello"
+shell> date > timestamp.txt         # Save date to file
+```
 
-These are intentionally omitted to keep Phase 1 focused and educational.
+### Append Redirection `>>`
 
-## Troubleshooting
+Append to a file:
+```bash
+shell> echo "line 2" >> log.txt     # Add to end of log.txt
+shell> date >> timestamps.txt       # Append timestamp
+shell> ps >> process_log.txt        # Append process list
+```
 
-### Build errors
+## Piping
+
+Connect output of one command to input of another using `|`:
 
 ```bash
-make clean && make
+shell> cat file.txt | grep pattern          # Search in file
+shell> cat file.txt | sort                  # Sort file contents
+shell> cat file.txt | sort | uniq           # Sort and remove duplicates
+shell> ps aux | grep shell                  # Find shell process
+shell> ls | grep src                        # Find items with "src"
+shell> cat data.txt | sort | uniq > result.txt  # Sort and save
+shell> echo "1 3 2" | tr ' ' '\n' | sort   # Sort numbers
 ```
 
-If still failing, check you have:
-- GCC or Clang installed
-- C99 standard support
+Multiple pipes can be chained together.
 
-### Shell hangs
+## Background Jobs
 
-Press **Ctrl+C** to interrupt, then type `make clean && make` to rebuild.
+Run commands in the background using `&`:
 
-### Commands not found
-
-Use full path: `/bin/ls` instead of `ls`
-Or ensure the command is in your `$PATH`:
 ```bash
-echo $PATH
+shell> sleep 100 &              # Run sleep in background
+[1234] sleep                    # Shows job ID and command
+
+shell>                          # Prompt returns immediately
+shell> long_command &           # Command runs in background
+shell> ps                       # Check running jobs
 ```
 
-## Contributing / Improvements
+**Signal Handling:**
+- Press `Ctrl+C` to terminate the background job (shell continues)
+- Shell ignores Ctrl+C and keeps running
+- Background jobs continue executing
 
-This is an educational project. Suggested exercises:
+## Project Files
 
-1. Add command history (circular buffer)
-2. Implement tab completion
-3. Add support for multiple commands with `;`
-4. Implement job control with `fg`, `bg`, `jobs`
-5. Add aliases (alias ls='ls -l')
+```
+src/
+  main.c      - Main REPL loop
+  shell.c     - Command parsing and execution
+  shell.h     - Header definitions
 
-See individual phase files for feature specifications.
+bin/
+  shell       - Compiled executable
 
-## Performance
+Makefile      - Build configuration
+README.md     - This file
+```
 
-Phase 1 overhead is minimal:
-- Fork: ~0-2ms
-- Execvp: ~1-5ms
-- Total: ~1-10ms per command (varies by system)
+## All Features Summary
 
-Example:
+| Feature | Syntax | Example |
+|---------|--------|---------|
+| External Commands | `command [args]` | `ls -la /tmp` |
+| Change Directory | `cd [path]` | `cd /tmp` |
+| Print Directory | `pwd` | `pwd` |
+| Exit Shell | `exit [code]` | `exit 0` |
+| Input Redirect | `command < file` | `sort < data.txt` |
+| Output Redirect | `command > file` | `ls > output.txt` |
+| Append Redirect | `command >> file` | `echo text >> log.txt` |
+| Pipe | `cmd1 \| cmd2` | `cat file \| grep text` |
+| Background Job | `command &` | `sleep 100 &` |
+| Ctrl+C | Press Ctrl+C | Terminates job (not shell) |
+
+## Makefile Targets
+
 ```bash
-$ time ./bin/shell << 'EOF'
-ls
-EOF
-real    0m0.012s
-user    0m0.004s
-sys     0m0.003s
+make              # Compile the shell
+make run          # Compile and run
+make clean        # Remove compiled files
+make debug        # Run with GDB debugger
+make valgrind     # Check memory leaks (Linux)
+make strace       # Trace system calls (Linux)
+make help         # Show all targets
 ```
 
-## Learning Resources
+## Testing Examples
 
-**Systems Programming:**
-- "Advanced Programming in the UNIX Environment" (APUE) - Stevens & Rago
-- "The Linux Programming Interface" (TLPI) - Michael Kerrisk
+### Basic Commands
+```bash
+shell> ls
+shell> pwd
+shell> whoami
+shell> date
+```
 
-**This Project Demonstrates:**
-- Process creation (fork)
-- Program execution (execvp)
-- Process synchronization (wait/waitpid)
-- Memory management (malloc/free)
-- Signal handling (coming in Phase 5)
-- Interprocess communication (coming in Phase 4)
-- File redirection (coming in Phase 3)
+### Redirection
+```bash
+shell> echo "hello world" > test.txt
+shell> cat < test.txt
+shell> sort < unsorted.txt > sorted.txt
+shell> echo "more text" >> test.txt
+```
 
-## License
+### Piping
+```bash
+shell> cat file.txt | grep pattern
+shell> ls | sort
+shell> cat data.txt | grep "search" | wc -l
+shell> find . -type f | head -10
+```
 
-Educational use. No license restrictions.
+### Combined Operations
+```bash
+shell> cat input.txt | sort | uniq > output.txt
+shell> ps aux | grep shell | head -5
+shell> find . -name "*.txt" | wc -l
+```
 
----
+### Background Jobs
+```bash
+shell> sleep 50 &
+shell> find / -name "*.txt" > results.txt &
+shell> ls -R > directory_listing.txt &
+shell> Ctrl+C
+```
 
-**Current Status: Phase 1 Complete ✅**
+## Project Statistics
 
-*Last updated: June 29, 2026*
+- **Source Code:** ~900 lines of C
+- **Compilation Warnings:** 0
+- **Compilation Errors:** 0
+- **Memory Leaks:** 0
+- **POSIX System Calls:** 10+ different calls
